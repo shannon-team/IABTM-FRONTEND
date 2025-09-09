@@ -28,10 +28,10 @@ const MediaWatchingComponent = ({
         );
         const viewed = response.data?.data?.isViewed;
         setIsViewed(viewed);
-        setMediaStatuses((prev: Record<string, boolean>) => ({
-          ...prev,
+        setMediaStatuses({
+          ...mediaStatuses,
           [media._id]: viewed,
-        }) as Record<string, boolean>);
+        });
       } catch (error) {
         console.error("Error checking media progress:", error);
         setIsViewed(false);
@@ -63,10 +63,10 @@ const MediaWatchingComponent = ({
         );
 
         if (updatePathResponse.data.statusCode == 200) {
-          setMediaStatuses((prev: Record<string, boolean>) => ({
-            ...prev,
+          setMediaStatuses({
+            ...mediaStatuses,
             [media._id]: true,
-          }) as Record<string, boolean>);
+          });
 
           setUser(updatePathResponse.data.data);
           toast.success("Marked as viewed!");

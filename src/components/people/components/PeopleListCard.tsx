@@ -15,7 +15,7 @@ export default function PeopleCard({ id, name, image, online }: PeopleCardProps)
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   
-  const handleAddFriend = async (personId) => {
+  const handleAddFriend = async (personId: string) => {
     try {
       console.log(personId)
       const res = await axios.post(

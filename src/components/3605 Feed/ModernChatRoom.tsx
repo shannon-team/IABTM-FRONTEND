@@ -1,7 +1,8 @@
+"use client";
+
 import React, { useEffect, useRef, useState, Fragment, useMemo } from 'react';
 import io, { Socket } from 'socket.io-client';
 import { useAuthStore } from '@/storage/authStore';
-import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import StartRoomModal from './StartRoomModal';
 import AddUsersModal from './AddUsersModal';
@@ -140,12 +141,18 @@ const ModernChatRoom = () => {
   const userId = user?._id || 'user-123';
   const userName = user?.name || 'You';
   
-  const searchParams = useSearchParams();
-  
-  // Get URL parameters for personal chat
-  const chatType = searchParams?.get('chat');
-  const recipientId = searchParams?.get('recipientId');
-  const recipientName = searchParams?.get('recipientName');
+  // URL params (read on the client to avoid SSR/suspense requirement)
+  const [chatType, setChatType] = useState<string | null>(null);
+  const [recipientId, setRecipientId] = useState<string | null>(null);
+  const [recipientName, setRecipientName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const sp = new URLSearchParams(window.location.search);
+    setChatType(sp.get('chat'));
+    setRecipientId(sp.get('recipientId'));
+    setRecipientName(sp.get('recipientName'));
+  }, []);
   
   // Debug user information
   useEffect(() => {

@@ -279,7 +279,7 @@ const ChatSearch: React.FC<ChatSearchProps> = ({
                             />
                           ) : (
                             <span className="text-xs text-gray-600">
-                              {message.sender.name.charAt(0).toUpperCase()}
+                              {(message?.sender?.name?.charAt(0) ?? '').toUpperCase()}
                             </span>
                           )}
                         </div>

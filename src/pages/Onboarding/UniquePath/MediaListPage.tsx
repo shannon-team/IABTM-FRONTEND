@@ -7,6 +7,7 @@ import SectionHeader from '@/components/Onboarding/UniquePath/SectionHeader';
 import { useAuthStore } from '@/storage/authStore';
 import { EditModal } from '@/components/admin/curated-media/EditMediaModal';
 import { FilmMedia } from '@/types/userType';
+import { MediaItem } from '@/types/CuratedMediaType';
 
 interface MediaListPageProps {
     featuredMedia?: FilmMedia[];
@@ -42,7 +43,7 @@ export default function MediaListPage({
     const [isLoadingStatuses, setIsLoadingStatuses] = useState<boolean>(false);
     const [featuredMedia, setFeaturedMedia] = useState<FilmMedia[]>([]);
     const [additionalMedia, setAdditionalMedia] = useState<FilmMedia[]>([]);
-    const [editingMedia, setEditingMedia] = useState<FilmMedia | null>(null);
+    const [editingMedia, setEditingMedia] = useState<MediaItem | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
@@ -91,7 +92,7 @@ export default function MediaListPage({
                 const { statusCode, data, message } = response.data;
 
                 if (statusCode === 200) {
-                    const media = data || [];
+                    const media = (data || []).map((item: any) => ({ ...item, type: item.type || 'Video' }));
                     setFeaturedMedia(media);
                     setAdditionalMedia(media);
                 } else {
@@ -111,7 +112,7 @@ export default function MediaListPage({
     // Initial load
     useEffect(() => {
         if (propsFeaturedMedia) {
-            setFeaturedMedia(propsFeaturedMedia);
+            setFeaturedMedia(propsFeaturedMedia.map(pm => ({ ...pm, type: pm.type || 'Video' })));
             setIsLoading(false);
         } else {
             loadMediaData();
@@ -144,7 +145,7 @@ export default function MediaListPage({
     };
 
     const handleEditClick = (media: FilmMedia) => {
-        setEditingMedia(media);
+        setEditingMedia({ ...media, type: media.type || 'Video' });
         setIsModalOpen(true);
     };
 
@@ -154,7 +155,7 @@ export default function MediaListPage({
         }
     };
 
-    const handleUpdateMedia = async (updatedMedia: FilmMedia) => {
+    const handleUpdateMedia = async (updatedMedia: MediaItem) => {
         try {
             const response = await axios.put(
                 `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/superAdmin/media/films/update/${updatedMedia._id}`,
@@ -165,11 +166,12 @@ export default function MediaListPage({
 
             if (statusCode === 200) {
                 toast.success(message || 'Media updated successfully');
+                const updatedAsFilm = updatedMedia as unknown as FilmMedia;
                 setFeaturedMedia(prev =>
-                    prev.map(item => item._id === updatedMedia._id ? updatedMedia : item)
+                    prev.map(item => item._id === updatedAsFilm._id ? updatedAsFilm : item)
                 );
                 setAdditionalMedia(prev =>
-                    prev.map(item => item._id === updatedMedia._id ? updatedMedia : item)
+                    prev.map(item => item._id === updatedAsFilm._id ? updatedAsFilm : item)
                 );
                 setIsModalOpen(false);
                 setEditingMedia(null);

@@ -39,9 +39,17 @@ import PeopleCard from './components/PeopleListCard';
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState('Friends');
-  const [friends, setFriends] = useState([]);
-  const [friendRequests, setFriendRequests] = useState([]);
-  const [people, setPeople] = useState([]);
+  type User = {
+    id: string;
+    name: string;
+    profilePicture?: string;
+    online?: boolean;
+    role?: any;
+  };
+
+  const [friends, setFriends] = useState<User[]>([]);
+  const [friendRequests, setFriendRequests] = useState<User[]>([]);
+  const [people, setPeople] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchFriend, setSearchFriend] = useState('');
   const [loadingFriends, setLoadingFriends] = useState(false);
@@ -150,7 +158,7 @@ export default function Page() {
           {friendRequests.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               {friendRequests.map((req) => (
-                <FriendRequestCard key={req.id} id={req.requesterId} name={req.name} image={req.profilePicture} onUpdateFriends={fetchFriends} onUpdateRequests={fetchPendingRequests} />
+                <FriendRequestCard key={req.id} id={(req as any).requesterId || req.id} name={req.name} image={req.profilePicture || ''} onUpdateFriends={fetchFriends} onUpdateRequests={fetchPendingRequests} />
               ))}
             </div> ) :(
             <div className="text-gray-500 text-sm mt-4 mb-5">You have no pending friend requests.</div>
@@ -160,7 +168,7 @@ export default function Page() {
           {friends.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {friends.map((friend) => (
-                <UserCard key={friend.id} id={friend.id} name={friend.name} image={friend.profilePicture} online={friend.online} onUpdate={fetchFriends}/>
+                <UserCard key={friend.id} id={friend.id} name={friend.name} image={friend.profilePicture || ''} online={friend.online} onUpdate={fetchFriends}/>
               ))}
             </div>
           ) : (
@@ -179,7 +187,7 @@ export default function Page() {
                 key={person.id}
                 id={person.id}
                 name={person.name}
-                image={person.profilePicture}
+                image={person.profilePicture || ''}
                 online={person.role}
               />
             ))}

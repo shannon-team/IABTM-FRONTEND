@@ -25,8 +25,14 @@ import { Playlist } from "./Music/Types/playlist";
 import { formatTime } from "@/utils/time";
 import Spinner from "../ui/spinner";
 import { useAuthStore } from '@/storage/authStore';
+import Shop from '@/app/shop/page';
+import Blogs from '@/components/blogs/page';
 
-export default function MusicLibrary({setActiveSection}) {
+type MusicLibraryProps = {
+  setActiveSection: (section: string) => void;
+};
+
+export default function MusicLibrary({ setActiveSection }: MusicLibraryProps) {
   const [musicData, setMusicData] = useState<any[]>([]);
   const [currentTrack, setCurrentTrack] = useState<any | null>(null);
   const [selectedTrackForMenu, setSelectedTrackForMenu] = useState<string | null>(null);
@@ -62,13 +68,13 @@ export default function MusicLibrary({setActiveSection}) {
         },
       });
 
-      const tracks = res.data.tracks.map((track) => ({
-        id: track.videoId,
-        title: track.title,
-        artist: track.author,
-        img: track.thumbnail,
-        duration: track.duration,
-      }));
+          const tracks: Track[] = res.data.tracks.map((track: any) => ({
+            id: track.videoId,
+            title: track.title,
+            artist: track.author,
+            img: track.thumbnail,
+            duration: track.duration,
+          }));
 
       setMusicData(tracks);
     } catch (err) {

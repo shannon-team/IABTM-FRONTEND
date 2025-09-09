@@ -1,7 +1,28 @@
 import React from "react";
 import { Play, Pause, SkipBack, SkipForward, Music as MusicIcon, Volume2, X } from "lucide-react";
 
-export default function MusicPlayer({currentTrack,isPlaying,setIsPlaying,currentTrackIndex,musicData,playTrack,currentTime,progress,formatTime,handleSeek,volume, onVolumeChange}) {
+interface MusicPlayerProps {
+  currentTrack: {
+    img?: string;
+    artist: string;
+    title: string;
+    duration?: string;
+    [key: string]: any;
+  };
+  isPlaying: boolean;
+  setIsPlaying: (value: boolean | ((prev: boolean) => boolean)) => void;
+  currentTrackIndex: number | null;
+  musicData: any[];
+  playTrack: (track: any, index: number) => void;
+  currentTime: number;
+  progress: number;
+  formatTime: (time: number) => string;
+  handleSeek: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  volume: number;
+  onVolumeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default function MusicPlayer({currentTrack,isPlaying,setIsPlaying,currentTrackIndex,musicData,playTrack,currentTime,progress,formatTime,handleSeek,volume, onVolumeChange}: MusicPlayerProps) {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-md px-6 py-4 flex items-center justify-between z-50 h-[100px]">
       

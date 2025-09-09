@@ -46,9 +46,20 @@ export function useAudioRoom({
     audioRoomUsers.forEach(peerId => {
       if (peerId === userId) return;
       if (connections[peerId]) return;
-      const pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+      const pc = new RTCPeerConnection({
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          {
+            urls: 'turn:relay1.expressturn.com:3480',
+            username: '000000002072354464',
+            credential: 'URGF0vnaKMoQ58xdOLZj2ZY2d3M=',
+          },
+        ],
+      });
       // Add local stream
-      localStreamRef.current.getTracks().forEach(track => pc.addTrack(track, localStreamRef.current!));
+      if (localStreamRef.current) {
+  localStreamRef.current.getTracks().forEach(track => pc.addTrack(track, localStreamRef.current!));
+      }
       // Handle remote stream
       pc.ontrack = (event) => {
         setRemoteStreams(prev => ({ ...prev, [peerId]: event.streams[0] }));
@@ -77,7 +88,16 @@ export function useAudioRoom({
       if (!isInAudioRoom || fromUserId === userId) return;
       let pc = connections[fromUserId];
       if (!pc) {
-        pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
+        pc = new RTCPeerConnection({
+          iceServers: [
+            { urls: 'stun:stun.l.google.com:19302' },
+            {
+              urls: 'turn:relay1.expressturn.com:3480',
+              username: '000000002072354464',
+              credential: 'URGF0vnaKMoQ58xdOLZj2ZY2d3M=',
+            },
+          ],
+        });
         localStreamRef.current?.getTracks().forEach(track => pc.addTrack(track, localStreamRef.current!));
         pc.ontrack = (event) => {
           setRemoteStreams(prev => ({ ...prev, [fromUserId]: event.streams[0] }));

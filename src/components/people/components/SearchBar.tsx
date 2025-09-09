@@ -1,6 +1,13 @@
 import { Search } from "lucide-react";
 
-export default function SearchBar({searchQuery,setSearchQuery,handleSearch, onUpdate}) {
+type SearchBarProps = {
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+  handleSearch: () => void;
+  onUpdate?: () => void;
+};
+
+export default function SearchBar({ searchQuery, setSearchQuery, handleSearch, onUpdate }: SearchBarProps) {
   return (
     <div className="flex items-center justify-center w-full border-b px-4 py-2 mb-6">
       <input type="text" placeholder="Search" value={searchQuery} className="w-full px-3 py-2 outline-none text-sm" onChange={(e) => setSearchQuery(e.target.value)}onKeyDown={(e) => {

@@ -227,7 +227,7 @@ const AddMemberModal: React.FC<AddMemberModalProps> = ({
                                 />
                               ) : (
                                 <span className="text-white font-semibold text-sm">
-                                  {user.name.charAt(0).toUpperCase()}
+                                  {(user?.name?.charAt(0) ?? '').toUpperCase()}
                                 </span>
                               )}
                             </div>

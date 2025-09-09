@@ -12,7 +12,7 @@ interface FriendRequestCardProps {
 
 export default function FriendRequestCard({ id, name, image, onUpdateFriends,onUpdateRequests }: FriendRequestCardProps) {
 
-  const handleConfirm = async (requesterId) => {
+  const handleConfirm = async (requesterId: string) => {
     try {
       // console.log('Accepting friend request for ID:', requesterId);
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/friend/accept-request`,
@@ -33,7 +33,7 @@ export default function FriendRequestCard({ id, name, image, onUpdateFriends,onU
     }
   }
 
-  const handleCancle = async (requesterId) => {
+  const handleCancel = async (requesterId: string) => {
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/friend/reject-request`,
         { requesterId: requesterId },
@@ -58,7 +58,7 @@ export default function FriendRequestCard({ id, name, image, onUpdateFriends,onU
         <p className="font-semibold">{name}</p>
         <div className="mt-2 flex gap-2">
           <button onClick={()=>handleConfirm(id)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Confirm</button>
-          <button onClick={()=>handleCancle(id)} className="bg-white border px-3 py-1 rounded hover:bg-gray-100">Delete</button>
+          <button onClick={()=>handleCancel(id)} className="bg-white border px-3 py-1 rounded hover:bg-gray-100">Delete</button>
         </div>
       </div>
       <ToastContainer position='top-right' autoClose={2000} />

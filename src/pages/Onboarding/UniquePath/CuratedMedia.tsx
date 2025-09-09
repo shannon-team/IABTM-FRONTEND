@@ -44,7 +44,8 @@ export default function CuratedMediaContent({ currentPath }: CuratedMediaContent
     description: item.description,
     thumbnail: item.thumbnail || `https://img.youtube.com/vi/${getYoutubeVideoId(item.videoLink)}/hqdefault.jpg`,
     videoLink: item.videoLink,
-    isViewed: false // We can implement view tracking in the future
+  isViewed: false, // We can implement view tracking in the future
+  attributes: item.attributes || { currentSelf: [], imagineSelf: [] },
   }));
 
   // Extract YouTube video ID from URL (helper function)

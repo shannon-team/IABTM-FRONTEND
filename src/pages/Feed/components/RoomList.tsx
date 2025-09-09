@@ -10,16 +10,16 @@ interface RoomListProps {
     selectedChat: Chat | null;
     setSelectedChat: (chat: Chat) => void;
     onNewGroup: () => void;
-    groupChats: Chat[];
-    personalChats: Chat[];
+    groupChats?: Chat[];
+    personalChats?: Chat[];
 }
 
 const RoomList: React.FC<RoomListProps> = ({
     selectedChat,
     setSelectedChat,
     onNewGroup,
-    groupChats,
-    personalChats
+    groupChats = [],
+    personalChats = []
 }) => {
     return (
         <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
@@ -45,7 +45,7 @@ const RoomList: React.FC<RoomListProps> = ({
                             >
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-                                        {chat.name.charAt(0).toUpperCase()}
+                                        {(chat.name?.charAt(0) ?? '').toUpperCase()}
                                     </div>
                                     <div>
                                         <p className="font-medium">{chat.name}</p>
@@ -87,7 +87,7 @@ const RoomList: React.FC<RoomListProps> = ({
                                 >
                                     <div className="flex items-center gap-3">
                                         <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">
-                                            {chat.name.charAt(0).toUpperCase()}
+                                            {(chat.name?.charAt(0) ?? '').toUpperCase()}
                                         </div>
                                         <div>
                                             <p className="font-medium">{chat.name}</p>

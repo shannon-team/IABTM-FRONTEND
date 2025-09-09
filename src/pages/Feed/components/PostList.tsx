@@ -9,6 +9,11 @@ import PostLoaderSpinner from '@/components/ui/loader/PostLoaderSpinner';
 import getSocket from '@/lib/socket';
 
 const PostsPage: React.FC = () => {
+  // Avoid running React Query hooks during server-side prerender. Next may
+  // attempt to prerender this file as a page; bail out early on the server.
+  if (typeof window === 'undefined') {
+    return <div />;
+  }
   const [livePosts, setLivePosts] = useState<Post[]>([]);
 
   const fetchPosts = async () => {

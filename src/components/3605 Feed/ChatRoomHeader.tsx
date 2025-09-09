@@ -147,7 +147,7 @@ const ChatRoomHeader: React.FC<ChatRoomHeaderProps> = ({
                 />
               ) : (
                 <span className="text-white font-bold text-lg">
-                  {groupName.charAt(0).toUpperCase()}
+                  {(groupName?.charAt(0) ?? '').toUpperCase()}
                 </span>
               )}
             </div>

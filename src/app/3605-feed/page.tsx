@@ -7,17 +7,21 @@ import ModernChatRoom from "@/components/3605 Feed/ModernChatRoom";
 import Sidebar from '@/components/Dashboard/Sidebar';
 import { useAuthStore } from '@/storage/authStore';
 import React, { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation';
 
 function page() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, loading } = useAuthStore();
-  const searchParams = useSearchParams();
-  
-  // Check if we should show chat room
-  const chatType = searchParams?.get('chat');
-  const recipientId = searchParams?.get('recipientId');
-  const recipientName = searchParams?.get('recipientName');
+  const [chatType, setChatType] = useState<string | null>(null);
+  const [recipientId, setRecipientId] = useState<string | null>(null);
+  const [recipientName, setRecipientName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const sp = new URLSearchParams(window.location.search);
+    setChatType(sp.get('chat'));
+    setRecipientId(sp.get('recipientId'));
+    setRecipientName(sp.get('recipientName'));
+  }, []);
 
   console.log('3605-feed page - URL parameters:', { chatType, recipientId, recipientName });
 

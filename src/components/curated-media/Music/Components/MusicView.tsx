@@ -1,6 +1,6 @@
 import React from "react";
 import { Play, MoreHorizontal, Search, MusicIcon, Pause } from "lucide-react";
-import { Track } from "../type/tracks";
+import { Track } from "../Types/tracks";
 
 interface Playlist {
   _id: string;

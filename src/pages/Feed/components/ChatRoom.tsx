@@ -173,7 +173,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ userId: _userId, recipientId, chatT
       if (data.groupId === recipientId) {
         console.log('Group avatar updated via socket:', data);
         // Update group info immediately with the new avatar
-        setGroupInfo(prev => prev ? { ...prev, avatar: data.avatar } : null);
+  setGroupInfo((prev: any) => prev ? { ...prev, avatar: data.avatar } : null);
         // Also fetch the complete updated group info
         axios.get(`/api/group/${recipientId}`, { withCredentials: true })
           .then(res => setGroupInfo(res.data.group))

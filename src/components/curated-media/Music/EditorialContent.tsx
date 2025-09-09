@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "@/components/ui/spinner";
 
+type Article = {
+  guid: string;
+  link: string;
+  title: string;
+  description?: string;
+};
+
 export default function EditorialContent() {
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,7 +41,7 @@ export default function EditorialContent() {
             <a href={article.link} target="_blank" rel="noopener noreferrer">
               {article.title}
             </a>
-            <p dangerouslySetInnerHTML={{ __html: article.description }}></p>
+            <p dangerouslySetInnerHTML={{ __html: article.description || "" }}></p>
           </li>
         ))}
       </ul>

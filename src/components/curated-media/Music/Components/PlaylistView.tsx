@@ -5,14 +5,14 @@ import axios from "axios";
 import { MoreHorizontal, Pause, Play, Trash2 } from "lucide-react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Track } from "../type/tracks";
+import { Track } from "../Types/tracks";
 import { useRouter } from "next/router";
 
 interface PlaylistViewProps {
   playlistId: string;
   playTrack: (track: Track, index: number) => void;
   setMusicData: (tracks: Track[]) => void;
-  currentTrack: (track: Track) => void;
+  currentTrack: Track | null;
   setActiveSection: (section: string) => void;
 }
 
@@ -35,7 +35,7 @@ export default function PlaylistView({ playlistId, playTrack, setMusicData,curre
       });
 
       const rawTracks = res.data.tracks || [];
-      const parsedTracks = rawTracks.map(track => {
+      const parsedTracks = rawTracks.map((track: Track) => {
         return track instanceof Map ? Object.fromEntries(track) : track;
       });
 
@@ -163,7 +163,7 @@ export default function PlaylistView({ playlistId, playTrack, setMusicData,curre
         <p className="text-gray-500">No songs present.</p>
       ) : (
         <div className="space-y-3">
-          {tracks.map((track, index) => (
+          {tracks.map((track: Track, index: number) => (
             <div
               key={track.id || index}
               className={`flex items-center justify-between p-2 rounded-md gap-4 hover:bg-gray-100 ${
@@ -180,7 +180,7 @@ export default function PlaylistView({ playlistId, playTrack, setMusicData,curre
                 {currentTrack?.id === track.id ? <Pause className="w-4 h-4"/> :<Play className="w-4 h-4" />}
               </button>
               <img
-                src={track.img || "/placeholder.png"} // fallback image
+                src={track.thumbnail || "/placeholder.png"} // fallback image
                 alt={track.title || "Unknown Title"}
                 className="w-10 h-10 object-cover rounded"
               />

@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
 import { toast, ToastContainer } from 'react-toastify';
@@ -11,7 +11,6 @@ const ResetPassword: React.FC = () => {
     const [isResendDisabled, setIsResendDisabled] = useState(true);
     const [timer, setTimer] = useState(20); // 20 seconds
 
-    const searchParams = useSearchParams();
     const [email, setEmail] = useState('');
     const [otp, setOtp] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -37,13 +36,16 @@ const ResetPassword: React.FC = () => {
 
 
     useEffect(() => {
-        if (searchParams && searchParams.get('email')) {
-            setEmail(searchParams.get('email') as string);
-        }else {
+        if (typeof window === 'undefined') return;
+        const sp = new URLSearchParams(window.location.search);
+        const e = sp.get('email');
+        if (e) {
+            setEmail(e);
+        } else {
             toast.error("Email is required to reset password");
             router.push('/forgot-password');
         }
-    }, [searchParams]);
+    }, []);
 
     const handleResendEmail = async (e: React.MouseEvent) => {
         // Prevent default to ensure this doesn't trigger form submission

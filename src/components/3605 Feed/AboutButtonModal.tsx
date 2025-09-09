@@ -1540,7 +1540,7 @@ const RemoveMemberModal: React.FC<RemoveMemberModalProps> = ({
             />
           ) : (
             <span className="text-white font-semibold text-xs">
-              {member.name.charAt(0).toUpperCase()}
+              {(member?.name?.charAt(0) ?? '').toUpperCase()}
             </span>
           )}
         </div>

@@ -5,9 +5,10 @@ import ProgressCard from '@/components/Dashboard/Progress';
 import Header from '../shop/components/Header';
 import Shop from '../shop/page';
 import { ChevronLeft, ChevronRight } from 'lucide-react'; 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import MediaLibrary from '@/components/curated-media/MediaLibrary';
-import Home from '@/pages/Dashboard/Home';
+import dynamic from 'next/dynamic';
+const Home = dynamic(() => import('@/components/Dashboard/HomeClient'), { ssr: false });
 import Blogs from '@/components/blogs/page';
 import Settings from "@/pages/UserSettings/Settings";
 import People from '@/components/people/page';
@@ -21,7 +22,6 @@ const Page: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeFeedTab, setActiveFeedTab] = useState('Feed');
   const { user, loading } = useAuthStore();
-  const searchParams = useSearchParams();
 
   const toggleSidebar = () => setSidebarOpen(prev => !prev);
   const closeSidebar = () => setSidebarOpen(false);
@@ -29,11 +29,13 @@ const Page: React.FC = () => {
   // Get the current curated path for progress display
   const currentPath = user?.curatedPaths?.[0] || null;
 
+  // Read section from URL on the client to avoid useSearchParams SSR suspense requirement
   useEffect(() => {
-    if (!searchParams) return;
-    const section = searchParams.get('section');
+    if (typeof window === 'undefined') return;
+    const sp = new URLSearchParams(window.location.search);
+    const section = sp.get('section');
     if (section) setActiveSection(section);
-  }, [searchParams]);
+  }, []);
 
   // Check if we should hide progress panels (only hide for Chat Room tab)
   const shouldHideProgress = activeSection === 'IABTM 3605' && activeFeedTab === 'Chats Room';
