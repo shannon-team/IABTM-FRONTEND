@@ -126,9 +126,9 @@ const EditPostModal: React.FC<EditPostModalProps> = ({ post, isOpen, onClose, on
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden">
+      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
           <h2 className="text-xl font-semibold text-gray-900">Edit Post</h2>
           <button
             onClick={onClose}
@@ -139,8 +139,8 @@ const EditPostModal: React.FC<EditPostModalProps> = ({ post, isOpen, onClose, on
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6">
+  {/* Form */}
+  <form onSubmit={handleSubmit} className="p-6 overflow-y-auto flex-1">
           {/* Content */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">

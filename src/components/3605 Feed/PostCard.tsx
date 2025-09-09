@@ -262,7 +262,7 @@ const PostCard: React.FC<Post> = ({
                     onClick={() => setShowCommentsModal(false)}
                 >
                     <div 
-                        className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-2xl border border-gray-200"
+                        className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-2xl border border-gray-200 flex flex-col"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Modal Header */}
