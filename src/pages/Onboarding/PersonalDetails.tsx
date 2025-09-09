@@ -251,8 +251,8 @@ export default function PersonalDetails() {
                     console.error('Fetch user profile error:', error);
                 }
 
-                // Redirect to dashboard/curated media page
-                router.push('/onboarding');
+                // Redirect to dashboard after successful login/onboarding
+                router.push('/dashboard');
             } else {
                 toast.error(message || 'Failed to verify');
             }
